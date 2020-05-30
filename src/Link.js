@@ -1,13 +1,13 @@
-import { Inertia, shouldIntercept } from '@inertiajs/inertia'
-import { createElement, useCallback } from 'react'
+import { Inertia, shouldIntercept } from "@inertiajs/inertia";
+import { createElement, useCallback } from "react";
 
-const noop = () => undefined
+const noop = () => undefined;
 
-export default function InertiaLink({
+export default function Link({
   children,
   data = {},
   href,
-  method = 'get',
+  method = "get",
   onClick = noop,
   preserveScroll = false,
   preserveState = false,
@@ -15,22 +15,25 @@ export default function InertiaLink({
   only = [],
   ...props
 }) {
-  const visit = useCallback(event => {
-    onClick(event)
+  const visit = useCallback(
+    (event) => {
+      onClick(event);
 
-    if (shouldIntercept(event)) {
-      event.preventDefault()
+      if (shouldIntercept(event)) {
+        event.preventDefault();
 
-      Inertia.visit(href, {
-        data,
-        method,
-        preserveScroll,
-        preserveState,
-        replace,
-        only,
-      })
-    }
-  }, [data, href, method, onClick, preserveScroll, preserveState, replace, only])
+        Inertia.visit(href, {
+          data,
+          method,
+          preserveScroll,
+          preserveState,
+          replace,
+          only,
+        });
+      }
+    },
+    [data, href, method, onClick, preserveScroll, preserveState, replace, only]
+  );
 
-  return createElement('a', { ...props, href, onClick: visit }, children)
+  return createElement("a", { ...props, href, onClick: visit }, children);
 }

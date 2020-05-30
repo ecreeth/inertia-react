@@ -1,54 +1,35 @@
-import { Inertia } from '@inertiajs/inertia'
-import { createElement, useEffect, useState } from 'react'
-import PageContext from './PageContext'
+import React, { createElement, useEffect, useState } from "react";
+import { Inertia } from "@inertiajs/inertia";
 
-const identity = i => i
-
-export default function App({
-  children,
-  initialPage,
-  resolveComponent,
-  transformProps = identity,
-}) {
+function InertiaApp({ initialPage, resolveComponent }) {
   const [page, setPage] = useState({
     component: null,
     key: null,
     props: {},
-  })
+  });
 
   useEffect(() => {
     Inertia.init({
       initialPage,
       resolveComponent,
       updatePage: (component, props, { preserveState }) => {
-        setPage(page => ({
+        setPage({
           component,
+          props,
           key: preserveState ? page.key : Date.now(),
-          props: transformProps(props),
-        }))
+        });
       },
-    })
-  }, [initialPage, resolveComponent, transformProps])
+    });
+  }, [initialPage, resolveComponent]);
 
   if (!page.component) {
-    return createElement(PageContext.Provider, { value: page.props }, null)
+    return null;
   }
 
-  const renderChildren = children || (({ Component, props, key }) => {
-    const child = createElement(Component, { key, ...props })
-
-    if (Component.layout) {
-      return Component.layout(child)
-    }
-
-    return child
-  })
-
-  return createElement(
-    PageContext.Provider,
-    { value: page.props },
-    renderChildren({ Component: page.component, key: page.key, props: page.props })
-  )
+  return createElement(page.component, {
+    props: page.props,
+    key: page.key,
+  });
 }
 
-App.displayName = 'Inertia'
+export default React.memo(InertiaApp);

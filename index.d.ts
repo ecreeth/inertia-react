@@ -17,7 +17,7 @@ type App<
   transformProps?: (props: PagePropsBeforeTransform) => PageProps
 }>
 
-interface InertiaLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
+interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
   data?: object
   href: string
   method?: string
@@ -32,17 +32,13 @@ interface InertiaLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
   only?: string[]
 }
 
-type InertiaLink = React.FunctionComponent<InertiaLinkProps>
-
-export function usePage<
-  PageProps extends Inertia.PageProps = Inertia.PageProps
->(): PageProps
+type Link = React.FunctionComponent<LinkProps>
 
 export function useRememberedState<RememberedState>(
   initialState: RememberedState,
   key?: string
 ): [RememberedState, React.Dispatch<React.SetStateAction<RememberedState>>]
 
-export const InertiaLink: InertiaLink
+export const Link: Link
 
 export const InertiaApp: App
