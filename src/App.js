@@ -1,12 +1,10 @@
 import React, { createElement, useEffect, useState } from "react";
+import usePage from "./usePage";
+import { atom, useRecoilState } from "recoil";
 import { Inertia } from "@inertiajs/inertia";
 
 function InertiaApp({ initialPage, resolveComponent }) {
-  const [page, setPage] = useState({
-    component: null,
-    key: null,
-    props: {},
-  });
+  const [page, setPage] = useRecoilState(usePage);
 
   useEffect(() => {
     Inertia.init({
@@ -14,8 +12,8 @@ function InertiaApp({ initialPage, resolveComponent }) {
       resolveComponent,
       updatePage: (component, props, { preserveState }) => {
         setPage({
+          ...props,
           component,
-          props,
           key: preserveState ? page.key : Date.now(),
         });
       },
@@ -26,10 +24,7 @@ function InertiaApp({ initialPage, resolveComponent }) {
     return null;
   }
 
-  return createElement(page.component, {
-    props: page.props,
-    key: page.key,
-  });
+  return createElement(page.component);
 }
 
 export default React.memo(InertiaApp);

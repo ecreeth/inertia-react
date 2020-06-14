@@ -1,6 +1,6 @@
 {
   "name": "@ecreeth/inertia-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "description": "Personal React adapter for Inertia.js",
   "contributors": [
@@ -26,6 +26,7 @@
   },
   "peerDependencies": {
     "@inertiajs/inertia": "^0.1.4",
-    "react": "^16.8.0"
+    "react": "^16.8.0",
+    "recoil": "^0.0.8"
   }
 }
